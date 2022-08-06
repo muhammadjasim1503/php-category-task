@@ -36,7 +36,7 @@ if ($res->num_rows>0){
     }
     $output .= "
     </tbody>
-    </table>'";
+    </table>";
     echo $output;
 } else {
     $output = 'No record Found';
