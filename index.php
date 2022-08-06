@@ -26,6 +26,10 @@ $product = $productObj->displayProducts();
 	<div class="row">
 		<div class="col-md-3">
 			<div class = "check-box">
+				<h2>Price Range</h2>
+				<input type="number" placeholder="Minimum price" class = "range" id = "min" value = "">
+				<input type="number" placeholder="Maximum price" class = "range" id = "max" value = ""><br>
+				<button type="button" id = "filter">Filter</button>
 				<h2>Categories</h2>
 				<?php 
 				foreach($categories as $c){
@@ -41,13 +45,26 @@ $product = $productObj->displayProducts();
 		<div class="col-md-9">
 			<h2>Products</h2>
 			<div class="filter-data">
-				<?php
+				<table>
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
 					foreach($product as $p){
 						?>
-						<p><?php echo $p['title'] ?></p>
+						<tr>
+							<td><?php echo $p['title'] ?></td>
+							<td><?php echo $p['price'] ?></td>
+						</tr>
 						<?php
 					}
-				?>
+					?>
+					</tbody>
+				</table>
 			</div>
 		</div>
 		
@@ -80,21 +97,29 @@ $(document).ready(function() {
 	});
 
 	function filter(){
-		// $('.filter').click(function() {
 			var category = getFilter('chkbox');
+			var min = document.getElementById('min').value;
+			var max = document.getElementById('max').value;
 			console.log(category);
 			$.ajax({
 				url: "values.php",
 				method: "POST",
 				data: {
 					category:category,
+					min:min,
+					max:max,
 				},
 				success: function(data){
 					document.getElementsByClassName('filter-data')[0].innerHTML = data;
 				}
 			});
-		}
-	// }
+	}
+
+	// Price Range
+	$('.range').keyup(function(){
+		filter();
+	});
+
 });
 </script>
 </html>
